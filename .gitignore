@@ -1,0 +1,26 @@
+# Data files (كبيرة ما ترفعها على GitHub)
+*.csv
+total_visitors_per_mall_cleaned.csv
+
+# Model files (بتولدها من الـ pipeline)
+footfall_model.pkl
+feature_cols.pkl
+hourly_features.csv
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.env
+venv/
+env/
+.venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
