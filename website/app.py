@@ -11,7 +11,9 @@ import joblib
 import plotly.express as px
 import plotly.graph_objects as go
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent.parent
 # ── Page config ────────────────────────────────────────────
 st.set_page_config(
     page_title="Mall Footfall Intelligence",
@@ -69,20 +71,19 @@ PLOTLY_TEMPLATE = "plotly_dark"
 # ── Data & model loaders ───────────────────────────────────
 @st.cache_data(show_spinner=False)
 def load_raw():
-    df = pd.read_csv("/Users/mac/Desktop/Zain Projects/Task 2 Visitor Mall Dataset/data/processed/total_visitors_per_mall_cleaned.csv")
+    df = pd.read_parquet(BASE_DIR / "data" / "processed" / "total_visitors_per_mall.parquet")
     df["VISIT_DATE"] = pd.to_datetime(df["VISIT_DATE"])
     df["HOUR"]    = df["VISIT_DATE"].dt.hour
     df["WEEKDAY"] = df["VISIT_DATE"].dt.day_name()
     return df
 
 @st.cache_data(show_spinner=False)
-def load_hourly():
-    return pd.read_csv("/Users/mac/Desktop/Zain Projects/Task 2 Visitor Mall Dataset/data/hourly_features/hourly_features.csv", parse_dates=["HOUR_TS"])
-
+def load_hourly():return pd.read_csv(BASE_DIR / "data" / "hourly_features" / "hourly_features.csv",parse_dates=["HOUR_TS"])
+    
 @st.cache_resource(show_spinner=False)
 def load_model():
-    model        = joblib.load("/Users/mac/Desktop/Zain Projects/Task 2 Visitor Mall Dataset/models/footfall_model.pkl")
-    feature_cols = joblib.load("/Users/mac/Desktop/Zain Projects/Task 2 Visitor Mall Dataset/models/feature_cols.pkl")
+    model = joblib.load(BASE_DIR / "models" / "footfall_model.pkl")
+    feature_cols = joblib.load(BASE_DIR / "models" / "feature_cols.pkl")
     return model, feature_cols
 
 raw     = load_raw()
